@@ -5,90 +5,168 @@
 		<script type="text/javascript" src="js/settings.js"></script>
 		<script type="text/javascript" src="js/functions.js"></script>
 		<style type="text/css">
+			html {
+				background: -webkit-linear-gradient(black, #2B3239);
+			}
+			a, a:visited, a:hover, a:active {
+				color: #999;
+			}
 			body {
+				color: white;
 				font-family: "Arial", "Verdana", "Helvetica", sans-serif;
+				font-size: 11px;
+				margin: 0;
 				width: 300px;
-				text-shadow: 2px 2px 10px #999;
+			}
+			button {
+				background-color: #333;
+				border: 1px solid #393A3C;
+				color: white;
+			}
+			button:hover {
+				background-color: #555;
+				border: 1px solid #888;
 			}
 			h1 {
 				margin: 0;
 				padding: 0;
 			}
 			h2 {
+				color: #B6B6B6;
 				margin: 0;
-				padding: 0;
-				font-size: 16px;
+				margin-top: 10px;
+				padding: 3px;
+				font-size: 11px;
+			}
+			hr {
+				margin: 0;
+				border: 1px solid #393A3C;
 			}
 			img {
 				float: left;
+				padding: 2px;
 			}
-			.about {
-				background-color: #DDD;
-				border: 1px solid #CCC;
-				border-radius: 5px;
-				padding: 5px;
+			input {
+				background: rgba(255,255,255,0);
+				border: none;
+				border-bottom: 1px solid #393A3C;
+				color: #CCC;
+				text-align: center;
+			}
+			input:hover {
+				border-bottom: 1px solid #888;
+			}
+			input[type="checkbox"] {
+				-webkit-appearance: none;
+				border: 1px solid #393A3C;
+				float: left;
+				padding: 4px;
+				display: inline-block;
+				position: relative;
+				margin-bottom: 0px;
+				margin-top: 2px;
+			}
+			input[type="checkbox"]:active, input[type="checkbox"]:checked:active, input[type="checkbox"]:hover, input[type="checkbox"]:checked:hover  {
+				background-color: #555;
+				border: 1px solid #888;
+			}
+			input[type="checkbox"]:checked {
+				background-color: #333;
+				border: 1px solid #555;
+				color: white;
+			}
+			input[type="checkbox"]:checked:after {
+				content: '\2714';
 				font-size: 11px;
+				position: absolute;
+				top: -4px;
+				left: 0px;
+				color: #33B5E5;
+			}
+			.padding {
+				padding: 5px;
+			}
+			.setting {
+				float: left;
+			}
+			#actionbar {
+				border-bottom: 2px solid #33B5E5;
+				height: 36px;
+			}
+			#actionbar img {
+				padding: 2px;
+			}
+			#content {
+				margin: auto 20px auto 20px;
 			}
 			#name {
 				float: left;
-				padding-left: 5px;
-				font-size: 24px;
+				padding-top: 9px;
+				font-size: 13px;
 			}
 			#session {
 				color: green;
 				margin-bottom: 5px;
 				background-color: #55FF55;
+				padding-left: 23px;
 			}
 			#version {
-				font-size: 12px;
-			}
-			.category {
-				background-color: #EEE;
-				border: 1px solid #DDD;
-				border-radius: 5px;
-				padding: 5px;
 				font-size: 12px;
 			}
 		</style>
 	</head>
 	<body>
+		<div id="actionbar">
+			<img width="32" height="32" src="img/icon.png" />
+			<span id="name">LastPlug</span>
+		</div>
 		<div id="session"></div>
-		<img width="48" height="48" src="img/icon.png" />
-		<span id="name">
-			LastPlug
+		<div id="content">
+			<h2>GENERAL SETTINGS</h2>
+			<hr />
+			<div class="padding">
+				<img src="http://i.imgur.com/qD3PV.png" />
+				<span class="setting">
+					<span i18n="SETTINGS_NOTIFICATIONTIMEOUT">Notification Timeout</span>: <input size="1" id="notificationTimeout" /> <span i18n="GENERAL_SECONDS">seconds</span><br /><br />
+				</span>
+			</div>
+			<h2>ENABLE/DISABLE NOTIFICATIONS</h2>
+			<hr />
+			<div class="padding">
+				<input type="checkbox" id="enable_chatmessages" name="enable_chatmessages" />Chat Messages<br />
+				<input type="checkbox" id="enable_djadvances" name="enable_djadvances" />DJ Advances<br />
+				<input type="checkbox" id="enable_djupdates" name="enable_djupdates" />DJ Updates<br />
+				<input type="checkbox" id="enable_fans" name="enable_fans" />Fans<br />
+				<input type="checkbox" id="enable_mentions" name="enable_mentions" />Mentions<br />
+				<input type="checkbox" id="enable_updates" name="enable_updates" />Update Notifications<br />
+			</div>
+			<h2>ADDITIONAL FEATURES</h2>
+			<hr />
+			<div class="padding">
+				<input type="checkbox" id="enable_autowoot" name="enable_autowoot" />Auto Woot<br />
+				<input type="checkbox" id="disable_animations" name="disable_animations" />Disable Animations<br />
+				<input type="checkbox" id="enable_grayscale" name="enable_grayscale" />Grayscale Chat Mode<br />
+				
+				<br />
+			</div>
+			<button id="saveSettings"><span i18n="SETTINGS_SAVE">Save settings</span></button>
+			<button id="eraseSettings"><span i18n="SETTINGS_RESET">Reset</span></button>
+			
+			<br /><br />
+			<h2>ABOUT</h2>
+			<hr />
+			<div class="padding">
+				Version 0.4 Pre-Release<br />
+				Created by Maciej Benke (Maxorq)<br />
+				<a target="_blank" href="http://github.com/Maxorq/LastPlug">GitHub</a> | <a target="_blank" href="http://crowdin.net/project/lastplug">Crowdin</a><br />
 			<br />
-			<span id="version"><span i18n="GENERAL_VERSION">Version</span> 0.3.3</span>
-		</span><br /><br /><br />
-		<div class="category">
-			<h2>General Settings</h2>
-			<span i18n="SETTINGS_NOTIFICATIONTIMEOUT">Notification Timeout</span>: <input size="4" id="notificationTimeout" /> <span i18n="GENERAL_SECONDS">seconds</span>
-		</div><br />
-		<div class="category">
-			<h2>Enable/Disable Notifications</h2>
-			<input type="checkbox" id="enable_chatmessages" name="enable_chatmessages" />Chat Messages<br />
-			<input type="checkbox" id="enable_djadvances" name="enable_djadvances" />DJ Advances<br />
-			<input type="checkbox" id="enable_djupdates" name="enable_djupdates" />DJ Updates<br />
-			<input type="checkbox" id="enable_fans" name="enable_fans" />Fans<br />
-			<input type="checkbox" id="enable_mentions" name="enable_mentions" />Mentions
-			<input type="checkbox" id="enable_updates" name="enable_updates" />Update Notifications
-		</div>
-		<br />
-		<div class="category">
-			<h2>Additional Features</h2>
-			<input type="checkbox" id="enable_autowoot" name="enable_autowoot" />Auto Woot<br />
-		</div>
-		<br />
-		<button id="saveSettings"><span i18n="SETTINGS_SAVE">Save settings</span></button>
-		<button id="eraseSettings"><span i18n="SETTINGS_RESET">Reset</span></button>
-		<br /><br />
-		<div class="about">
-			Contribute to the code at <a target="_blank" href="http://github.com/Maxorq/LastPlug">GitHub</a><br />
-			Translate to your language at <a target="_blank" href="http://crowdin.net/project/lastplug">Crowdin</a><br />
-			Report bugs, issues and suggestions at <a target="_blank" href="http://github.com/Maxorq/LastPlug/issues">GitHub</a>
-		</div><br />
-		<div class="about">
-			Created by Maciej Benke (Maxorq)<br />
-			Thanks to: <a target="_blank" href="http://soundcloud.com/beatscence">Beat Scence</a>, <a target="_blank" href="http://soundcloud.com/noizerebel">NoizeRebel</a>, Steven, <a target="_blank" href="http://soundcloud.com/vinylion">VinyLion</a>
+				Thanks to:<br />
+				<a target="_blank" href="http://soundcloud.com/beatscence">Beat Scence</a>, <a target="_blank" href="http://soundcloud.com/noizerebel">NoizeRebel</a>, Steven, <a target="_blank" href="http://soundcloud.com/vinylion">VinyLion</a>
+				<br /><br />
+				<a style="color: white;" target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=psqmaxor%40gmail%2ecom&lc=US&item_name=LastPlug&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Donate!</a>
+
+			</div>
+			<br />
 		</div>
 	</body>
 </head>

@@ -67,20 +67,6 @@ function lpChatEventFunction(data) {
 		var json = JSON.stringify(jsondata);
 		fireLpChatEvent(json);
 	}
-	$('span[class*="chat-from"]').each(function() {
-		if($(this).html() == "Master Lucas") { 
-			$(this).css("color", "#1AD71A"); 
-		}
-		if($(this).html() == "Bᴀss Aᴅᴅɩcʈ") { 
-			$(this).css('background-image', "url('http://i.imgur.com/N4xZT.gif')"); 
-		}
-		if($(this).html() == "Maxorq") { 
-			$(this).css({'color' : 'orange', 'background-image' : "url('http://i.imgur.com/N4xZT.gif')"});
-		}
-		if($(this).html() == ".NoizeRebel`") { 
-			$(this).css('background-image', "url('http://i.imgur.com/N4xZT.gif')"); 
-		}
-	});
 }
 
 function lpDjAdvanceEventFunction(obj) {

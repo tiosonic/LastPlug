@@ -18,23 +18,52 @@ $('#booth-canvas').after('<span id="idle-timer-4" style="width: 30px; text-align
 $('#booth-canvas').after('<span id="idle-timer-3" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 133px; padding: 4px;">0:00</span>');
 $('#booth-canvas').after('<span id="idle-timer-2" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 207px; padding: 4px;">0:00</span>');
 $('#booth-canvas').after('<span id="idle-timer-1" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 284px; padding: 4px;">0:00</span>');
-$('#dj-canvas').after('<span id="idle-timer-0" style="width: 155px; text-align: center; position: absolute; top: 75%; left: 524px; padding-top: 4px;">0:00</span>');
-$('#chat-messages').append('<div class="chat-update"><span class="chat-text" style="color: lime;">LastPlug 0.3.3 enabled!</span></div>');
+$('#dj-canvas').after('<span id="idle-timer-0" style="width: 155px; text-align: center; position: absolute; top: 75%; left: 535px; padding-top: 4px;">0:00</span>');
+$('#chat-messages').append('<div class="chat-update"><span class="chat-text" style="color: white;">LastPlug 0.4 enabled!</span></div>');
+
+chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {
+	if(response.value == "true") {
+		function addTheRule(selector, rule) {
+			document.styleSheets[0].addRule(selector, rule);
+			document.styleSheets[3].addRule(selector, rule);
+		}
+		addTheRule(".chat-emote", "color: white;");
+		addTheRule(".chat-from-ambassador", "color: #CFADFF;");
+		addTheRule(".chat-from-moderator", "color: #666;");
+		addTheRule(".chat-from-super", "font-weight: bold; color: #CCC;");
+		addTheRule(".chat-from-you", "color: white;");
+		addTheRule(".chat-mention", "color: white;");
+		addTheRule(".chat-moderator", "background: url('http://i.imgur.com/J0Ek5.png') no-repeat 0 5px;");
+	}
+});
 document.getElementById('lpChatEventDiv').addEventListener('lpChatEvent', function() {
 	var eventData = document.getElementById('lpChatEventDiv').innerText;
 	var data = JSON.parse(eventData);
 	
+	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {
+		if(response.value == "false") {
+			$('span[class*="chat-from"]').each(function() {
+				if($(this).html() == "Master Lucas") { 
+					$(this).css("color", "#1AD71A"); 
+				}
+				if($(this).html() == "Maxorq") { 
+					$(this).css("color", "red");
+				}
+			});
+		}
+	});
+	
 	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_mentions"}, function(response) {
 		if(response.value == "true") {
 			if(data.bit == "1") {
-				chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: chrome.i18n.getMessage("NOTIFICATION_MENTIONED"), message: "<b>" + data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ":</b> " + data.message, color: "blue"});
+				chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: chrome.i18n.getMessage("NOTIFICATION_MENTIONED"), message: "<b>" + data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ":</b> " + data.message, color: "red"});
 			}
 		}
 	});
 	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_chatmessages"}, function(response) {
 		if(response.value == "true") {
 			if(data.bit == "0") {
-				chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: "Someone wrote a message on plug.dj!", message: "<b>" + data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ":</b> " + data.message, color: "cyan"});
+				chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: "Someone wrote a message on plug.dj!", message: "<b>" + data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ":</b> " + data.message, color: "blue"});
 			}
 		}
 	});
@@ -60,7 +89,7 @@ document.getElementById('lpDjUpdateEventDiv').addEventListener('lpDjUpdateEvent'
 		if(response.value == "true") {
 			var eventData = document.getElementById('lpDjUpdateEventDiv').innerText;
 			var data = JSON.parse(eventData);
-			chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: 'You are close to the booth!', message: 'You will play ' + data.song, color: "pink"});
+			chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: 'You are close to the booth!', message: 'You will play ' + data.song, color: "purple"});
 		}
 	});
 });
