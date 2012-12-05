@@ -40,6 +40,12 @@ document.getElementById('lpChatEventDiv').addEventListener('lpChatEvent', functi
 	var eventData = document.getElementById('lpChatEventDiv').innerText;
 	var data = JSON.parse(eventData);
 	
+	//var isYoutubeURL = data.message.replace(/^[^v]+v.(.{11}).*/,"$1");
+
+	//if(isYoutubeURL) {
+	//	alert(isYoutubeURL);
+	//}
+
 	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {
 		if(response.value == "false") {
 			$('span[class*="chat-from"]').each(function() {
