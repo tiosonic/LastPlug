@@ -12,7 +12,7 @@
 	},
 	"content_scripts": [
 		{
-			"matches": [ "http://www.plug.dj/*", "http://plug.dj/*", "http://socketio.plug.dj/*"],
+			"matches": [ "http://www.plug.dj/*", "http://plug.dj/*"],
 			"js": ["js/jquery-1.7.2.min.js", "js/jquery.url.js", "js/contentscript.js"]
 		}
 	],
@@ -22,7 +22,7 @@
 		"default_popup": "settings.html"
 	},
 	"permissions": [
-		"notifications", "tabs"
+		"notifications", "tabs", "http://tmiq.pl/*"
 	],
 	"web_accessible_resources": [
 		"js/script.js", "js/jquery-1.7.2.min.js", "js/jquery.url.js", "js/functions.js"

@@ -14,6 +14,10 @@ createHiddenDiv("lpDjAdvanceEventDiv")
 createHiddenDiv("lpDjUpdateEventDiv")
 createHiddenDiv("lpUserFanEventDiv")
 
+$.get('http://tmiq.pl/lastplug/nicknameStyles.json', function(data) {
+	var nicknameStyles = JSON.parse(data);
+});
+
 $('#booth-canvas').after('<span id="idle-timer-4" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 57px; padding: 4px;">0:00</span>');
 $('#booth-canvas').after('<span id="idle-timer-3" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 133px; padding: 4px;">0:00</span>');
 $('#booth-canvas').after('<span id="idle-timer-2" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 207px; padding: 4px;">0:00</span>');
@@ -49,12 +53,16 @@ document.getElementById('lpChatEventDiv').addEventListener('lpChatEvent', functi
 	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {
 		if(response.value == "false") {
 			$('span[class*="chat-from"]').each(function() {
-				if($(this).html() == "Master Lucas") { 
-					$(this).css("color", "#1AD71A"); 
+				if(nicknameStyles.hasOwnProperty($(this).html())) {
+					$(this).css(nicknameStyles[$(this).html()]);
 				}
-				if($(this).html() == "Maxorq") { 
-					$(this).css("color", "red");
-				}
+
+				//if($(this).html() == "Master Lucas") { 
+				//	$(this).css("color", "#1AD71A"); 
+				//}
+				//if($(this).html() == "Maxorq") { 
+				//	$(this).css("color", "red");
+				//}
 			});
 		}
 	});
