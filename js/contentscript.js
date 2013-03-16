@@ -64,13 +64,14 @@ document.getElementById('lpChatEventDiv').addEventListener('lpChatEvent', functi
 				if(nicknameStyles.hasOwnProperty($(this).html())) {
 					$(this).css(nicknameStyles[$(this).html()]);
 				}
+				if($(this).html() == "Maxorq") { 
+					$(this).parent().css({"background" : "url('http://i.imgur.com/ngJqiBv.png') no-repeat 0 5px", "padding-left" : "17px", "width" : "292px"});
+				}
 
 				//if($(this).html() == "Master Lucas") { 
 				//	$(this).css("color", "#1AD71A"); 
 				//}
-				//if($(this).html() == "Maxorq") { 
-				//	$(this).css("color", "red");
-				//}
+				
 			});
 		}
 	});
