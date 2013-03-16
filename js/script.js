@@ -38,6 +38,11 @@ setTimeout(function() {
 	$.each(Models.room.getUsers(), function(index, value) { 
 		value.timeIdle = 0;
 	});
+	var settings = $.parseJSON($('#lpSettingsDiv').text())
+	console.log(settings)
+	if(settings.disable_animations == "true") {
+		animSpeed = Infinity;
+	}
 }, 10000);
 
 setTimeout(function() {

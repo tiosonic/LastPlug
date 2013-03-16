@@ -12,6 +12,7 @@ function createHiddenDiv(divname) {
 createHiddenDiv("lpChatEventDiv")
 createHiddenDiv("lpDjAdvanceEventDiv")
 createHiddenDiv("lpDjUpdateEventDiv")
+createHiddenDiv("lpSettingsDiv")
 createHiddenDiv("lpUserFanEventDiv")
 
 $.get('http://tmiq.pl/lastplug/nicknameStyles.json', function(data) {
@@ -111,6 +112,15 @@ document.getElementById('lpDjUpdateEventDiv').addEventListener('lpDjUpdateEvent'
 		}
 	});
 });
+
+var settings = { };
+chrome.extension.sendRequest({method: "getLocalStorage", value: "disable_animations"}, function(response) {
+	settings.disable_animations = response.value
+});
+
+setTimeout(function() {
+	$('#lpSettingsDiv').text(JSON.stringify(settings))
+}, 1000)
 
 document.getElementById('lpUserFanEventDiv').addEventListener('lpUserFanEvent', function() {
 	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_fans"}, function(response) {

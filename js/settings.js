@@ -48,7 +48,7 @@ function saveSettings() {
 			}
 		}
 	}
-	$('#session').css('display', 'block').html('Saved! You may need to refresh the page to see the changes.')
+	$('#session').css('display', 'block').html('<div>Saved!</div> You may need to refresh the page to see the changes.')
 	setTimeout(function() {
 		$('#session').slideUp('slow');
 	}, 3000);
