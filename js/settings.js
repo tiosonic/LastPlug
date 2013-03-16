@@ -1,5 +1,15 @@
-var defaults = [5000, false, false, true, true, true, true, true, false, false];
-var settings = ['notificationTimeout', 'disable_animations', 'enable_chatmessages', 'enable_djadvances', 'enable_djupdates', 'enable_fans', 'enable_mentions', 'enable_updates', 'enable_autowoot', 'enable_grayscale'];
+var defaults = [5000, false, false, true, true, true, true, true, false, false, true];
+var settings = ['notificationTimeout', 
+				'disable_animations', 
+				'enable_chatmessages', 
+				'enable_djadvances', 
+				'enable_djupdates', 
+				'enable_fans', 
+				'enable_mentions', 
+				'enable_updates', 
+				'enable_autowoot', 
+				'enable_grayscale', 
+				'enable_idletimers'];
 
 
 function loadSettings() {
