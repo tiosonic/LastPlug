@@ -51,7 +51,7 @@ function saveSettings() {
 	$('#session').css('display', 'block').html('Saved! You may need to refresh the page to see the changes.')
 	setTimeout(function() {
 		$('#session').slideUp('slow');
-	}, 1000);
+	}, 3000);
 }
 
 function eraseSettings() {
