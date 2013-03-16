@@ -25,6 +25,8 @@ function showNotification(title, message, avatar, color) {
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 	if(request.method == "getLocalStorage") {
 		sendResponse({value: localStorage[request.value]});
+	} else if(request.method == "getVersion") {
+		sendResponse({value: chrome.app.getDetails().version});
 	} else {
 		showNotification(request.title, request.message, request.avatar, request.color);
 	}

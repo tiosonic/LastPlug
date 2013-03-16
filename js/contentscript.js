@@ -26,8 +26,11 @@ chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_idletime
 		$('#booth-canvas').after('<span id="idle-timer-2" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 207px; padding: 4px;">0:00</span>');
 		$('#booth-canvas').after('<span id="idle-timer-1" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 284px; padding: 4px;">0:00</span>');
 		$('#dj-canvas').after('<span id="idle-timer-0" style="width: 155px; text-align: center; position: absolute; top: 75%; left: 535px; padding-top: 4px;">0:00</span>');
-		$('#chat-messages').append('<div class="chat-update"><span class="chat-text" style="color: white;">LastPlug 0.4 enabled!</span></div>');
 	}
+});
+
+chrome.extension.sendRequest({method: "getVersion"}, function(response) {
+	$('#chat-messages').append('<div class="chat-update"><span class="chat-text">Also, welcome to the LastPlug ' + response.value + '!</span></div>');
 });
 
 chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {

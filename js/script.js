@@ -39,7 +39,6 @@ setTimeout(function() {
 		value.timeIdle = 0;
 	});
 	var settings = $.parseJSON($('#lpSettingsDiv').text())
-	console.log(settings)
 	if(settings.disable_animations == "true") {
 		animSpeed = Infinity;
 	}
