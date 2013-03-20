@@ -1,6 +1,6 @@
 {
 	"name": "LastPlug",
-	"version": "0.5",
+	"version": "0.5.1",
 	"manifest_version": 2,
 	"description": "Some tweaks for plug.dj, also last.fm scrobbling (someday).",
 	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
