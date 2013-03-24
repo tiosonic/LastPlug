@@ -121,6 +121,9 @@ var settings = { };
 chrome.extension.sendRequest({method: "getLocalStorage", value: "disable_animations"}, function(response) {
 	settings.disable_animations = response.value
 });
+chrome.extension.sendRequest({method: "getLocalStorage", value: "disable_audience"}, function(response) {
+	settings.disable_audience = response.value
+});
 
 setTimeout(function() {
 	$('#lpSettingsDiv').text(JSON.stringify(settings))

@@ -1,6 +1,7 @@
-var defaults = [5000, false, false, true, true, true, true, true, false, false, true];
+var defaults = [5000, false, false, false, true, true, true, true, true, false, false, true];
 var settings = ['notificationTimeout', 
-				'disable_animations', 
+				'disable_animations',
+				'disable_audience',
 				'enable_chatmessages', 
 				'enable_djadvances', 
 				'enable_djupdates', 

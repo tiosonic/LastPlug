@@ -42,6 +42,9 @@ setTimeout(function() {
 	if(settings.disable_animations == "true") {
 		animSpeed = Infinity;
 	}
+	if(settings.disable_audience == "true") {
+		$('#audience').remove()
+	}
 }, 10000);
 
 setTimeout(function() {
