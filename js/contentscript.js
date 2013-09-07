@@ -9,135 +9,138 @@ function createHiddenDiv(divname) {
 	document.body.appendChild(t);
 }
 
-createHiddenDiv("lpChatEventDiv")
-createHiddenDiv("lpDjAdvanceEventDiv")
-createHiddenDiv("lpDjUpdateEventDiv")
-createHiddenDiv("lpSettingsDiv")
-createHiddenDiv("lpUserFanEventDiv")
+setTimeout(function() {
+	createHiddenDiv("lpChatEventDiv")
+	createHiddenDiv("lpDjAdvanceEventDiv")
+	createHiddenDiv("lpDjUpdateEventDiv")
+	createHiddenDiv("lpSettingsDiv")
+	createHiddenDiv("lpUserFanEventDiv")
 
-$.get('http://tmiq.pl/lastplug/nicknameStyles.json', function(data) {
-	nicknameStyles = data
-});
+	$.get('http://statpoint.info/lastplug/', function(data) {
+		nicknameStyles = data
+	});
 
-chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_idletimers"}, function(response) {
-	if(response.value == "true") {
-		$('#booth-canvas').after('<span id="idle-timer-4" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 57px; padding: 4px;">0:00</span>');
-		$('#booth-canvas').after('<span id="idle-timer-3" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 133px; padding: 4px;">0:00</span>');
-		$('#booth-canvas').after('<span id="idle-timer-2" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 207px; padding: 4px;">0:00</span>');
-		$('#booth-canvas').after('<span id="idle-timer-1" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 284px; padding: 4px;">0:00</span>');
-		$('#dj-canvas').after('<span id="idle-timer-0" style="width: 155px; text-align: center; position: absolute; top: 75%; left: 535px; padding-top: 4px;">0:00</span>');
-	}
-});
-
-chrome.extension.sendRequest({method: "getVersion"}, function(response) {
-	$('#chat-messages').append('<div class="chat-update"><span class="chat-text">Also, welcome to the LastPlug ' + response.value + '!</span></div>');
-});
-
-chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {
-	if(response.value == "true") {
-		function addTheRule(selector, rule) {
-			document.styleSheets[0].addRule(selector, rule);
-			document.styleSheets[3].addRule(selector, rule);
+	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_idletimers"}, function(response) {
+		if(response.value == "true") {
+			$('#booth-canvas').after('<span id="idle-timer-4" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 57px; padding: 4px;">0:00</span>');
+			$('#booth-canvas').after('<span id="idle-timer-3" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 133px; padding: 4px;">0:00</span>');
+			$('#booth-canvas').after('<span id="idle-timer-2" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 207px; padding: 4px;">0:00</span>');
+			$('#booth-canvas').after('<span id="idle-timer-1" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 284px; padding: 4px;">0:00</span>');
+			$('#dj-canvas').after('<span id="idle-timer-0" style="width: 155px; text-align: center; position: absolute; top: 75%; left: 535px; padding-top: 4px;">0:00</span>');
 		}
-		addTheRule(".chat-emote", "color: white;");
-		addTheRule(".chat-from-ambassador", "color: #CFADFF;");
-		addTheRule(".chat-from-moderator", "color: #666;");
-		addTheRule(".chat-from-super", "font-weight: bold; color: #CCC;");
-		addTheRule(".chat-from-you", "color: white;");
-		addTheRule(".chat-mention", "color: white;");
-		addTheRule(".chat-moderator", "background: url('http://i.imgur.com/J0Ek5.png') no-repeat 0 5px;");
-	}
-});
-document.getElementById('lpChatEventDiv').addEventListener('lpChatEvent', function() {
-	var eventData = document.getElementById('lpChatEventDiv').innerText;
-	var data = JSON.parse(eventData);
-	
-	//var isYoutubeURL = data.message.replace(/^[^v]+v.(.{11}).*/,"$1");
+	});
 
-	//if(isYoutubeURL) {
-	//	alert(isYoutubeURL);
-	//}
+	chrome.extension.sendRequest({method: "getVersion"}, function(response) {
+		$('#chat-messages').append('<div class="chat-update"><span class="chat-text">Also, welcome to the LastPlug ' + response.value + '!</span></div>');
+	});
 
 	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {
-		if(response.value == "false") {
-			$('span[class*="chat-from"]').each(function() {
-				if(nicknameStyles.hasOwnProperty($(this).html())) {
-					$(this).css(nicknameStyles[$(this).html()]);
-				}
-				if($(this).html() == "Maxorq") { 
-					$(this).parent().css({"background" : "url('http://i.imgur.com/ngJqiBv.png') no-repeat 0 5px", "padding-left" : "17px", "width" : "292px"});
-				}
-
-				//if($(this).html() == "Master Lucas") { 
-				//	$(this).css("color", "#1AD71A"); 
-				//}
-				
-			});
-		}
-	});
-	
-	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_mentions"}, function(response) {
 		if(response.value == "true") {
-			if(data.bit == "1") {
-				chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: chrome.i18n.getMessage("NOTIFICATION_MENTIONED"), message: "<b>" + data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ":</b> " + data.message, color: "red"});
+			function addTheRule(selector, rule) {
+				document.styleSheets[0].addRule(selector, rule);
+				document.styleSheets[3].addRule(selector, rule);
 			}
+			addTheRule(".chat-emote", "color: white;");
+			addTheRule(".chat-from-ambassador", "color: #CFADFF;");
+			addTheRule(".chat-from-moderator", "color: #666;");
+			addTheRule(".chat-from-super", "font-weight: bold; color: #CCC;");
+			addTheRule(".chat-from-you", "color: white;");
+			addTheRule(".chat-mention", "color: white;");
+			addTheRule(".chat-moderator", "background: url('http://i.imgur.com/J0Ek5.png') no-repeat 0 5px;");
 		}
 	});
-	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_chatmessages"}, function(response) {
-		if(response.value == "true") {
-			if(data.bit == "0") {
-				chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: "Someone wrote a message on plug.dj!", message: "<b>" + data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ":</b> " + data.message, color: "blue"});
-			}
-		}
-	});
-});
-
-document.getElementById('lpDjAdvanceEventDiv').addEventListener('lpDjAdvanceEvent', function() {
-	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_djadvances"}, function(response) {
-		var eventData = document.getElementById('lpDjAdvanceEventDiv').innerText;
+	document.getElementById('lpChatEventDiv').addEventListener('lpChatEvent', function() {
+		var eventData = document.getElementById('lpChatEventDiv').innerText;
 		var data = JSON.parse(eventData);
-		if(response.value == "true") {
-			chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: data.username + ' ' + chrome.i18n.getMessage("NOTIFICATION_ISNOWPLAYING"), message: data.song + " <b>(" + secondsToString(decodeURIComponent(data.duration)) + ")</b>", color: "orange"});
-		}
-		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_autowoot"}, function(anotherresponse) {
-			if((anotherresponse.value == "true") && (data != null)) {
-				$('#button-vote-positive').click();
+		
+		//var isYoutubeURL = data.message.replace(/^[^v]+v.(.{11}).*/,"$1");
+
+		//if(isYoutubeURL) {
+		//	alert(isYoutubeURL);
+		//}
+
+		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {
+			if(response.value == "false") {
+				$('span[class*="chat-from"]').each(function() {
+					if(nicknameStyles.hasOwnProperty($(this).html())) {
+						$(this).css(nicknameStyles[$(this).html()]);
+					}
+					if($(this).html() == "Maxorq") { 
+						$(this).parent().css({"background" : "url('http://i.imgur.com/ngJqiBv.png') no-repeat 0 5px", "padding-left" : "17px", "width" : "292px"});
+					}
+
+					//if($(this).html() == "Master Lucas") { 
+					//	$(this).css("color", "#1AD71A"); 
+					//}
+					
+				});
+			}
+		});
+		
+		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_mentions"}, function(response) {
+			if(response.value == "true") {
+				if(data.bit == "1") {
+					chrome.extension.sendRequest({title: "You got mentioned on plug.dj!", message: data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ": " + data.message});
+				}
+			}
+		});
+		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_chatmessages"}, function(response) {
+			if(response.value == "true") {
+				if(data.bit == "0") {
+					chrome.extension.sendRequest({title: "New message on plug.dj!", message: data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ": " + data.message});
+				}
 			}
 		});
 	});
-});
 
-document.getElementById('lpDjUpdateEventDiv').addEventListener('lpDjUpdateEvent', function() {
-	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_djupdates"}, function(response) {
-		if(response.value == "true") {
-			var eventData = document.getElementById('lpDjUpdateEventDiv').innerText;
+	document.getElementById('lpDjAdvanceEventDiv').addEventListener('lpDjAdvanceEvent', function() {
+		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_djadvances"}, function(response) {
+			var eventData = document.getElementById('lpDjAdvanceEventDiv').innerText;
 			var data = JSON.parse(eventData);
-			chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: 'You are close to the booth!', message: 'You will play ' + data.song, color: "purple"});
-		}
+			if(response.value == "true") {
+				chrome.extension.sendRequest({title: data.username + ' ' + chrome.i18n.getMessage("NOTIFICATION_ISNOWPLAYING"), message: data.song + " (" + secondsToString(data.duration) + ")"});
+			}
+			chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_autowoot"}, function(anotherresponse) {
+				if((anotherresponse.value == "true") && (data != null)) {
+					$('#button-vote-positive').click();
+				}
+			});
+		});
 	});
-});
 
-var settings = { };
-chrome.extension.sendRequest({method: "getLocalStorage", value: "disable_animations"}, function(response) {
-	settings.disable_animations = response.value
-});
-chrome.extension.sendRequest({method: "getLocalStorage", value: "disable_audience"}, function(response) {
-	settings.disable_audience = response.value
-});
-
-setTimeout(function() {
-	$('#lpSettingsDiv').text(JSON.stringify(settings))
-}, 1000)
-
-document.getElementById('lpUserFanEventDiv').addEventListener('lpUserFanEvent', function() {
-	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_fans"}, function(response) {
-		if(response.value == "true") {
-			var eventData = document.getElementById('lpUserFanEventDiv').innerText;
-			var data = JSON.parse(eventData);
-			chrome.extension.sendRequest({avatar: 'http://www.plug.dj/images/avatars/thumbs/' + data.avatar + '.png', title: chrome.i18n.getMessage("NOTIFICATION_FANNED"), message: "<b>" + data.from + "</b> " + chrome.i18n.getMessage("NOTIFICATION_ISNOWYOURFAN") + "!", "color": "green"});
-		}
+	document.getElementById('lpDjUpdateEventDiv').addEventListener('lpDjUpdateEvent', function() {
+		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_djupdates"}, function(response) {
+			if(response.value == "true") {
+				var eventData = document.getElementById('lpDjUpdateEventDiv').innerText;
+				var data = JSON.parse(eventData);
+				chrome.extension.sendRequest({title: 'You are close to the booth!', message: 'You will play ' + data.song});
+			}
+		});
 	});
-});
+
+
+	document.getElementById('lpUserFanEventDiv').addEventListener('lpUserFanEvent', function() {
+		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_fans"}, function(response) {
+			if(response.value == "true") {
+				var eventData = document.getElementById('lpUserFanEventDiv').innerText;
+				var data = JSON.parse(eventData);
+				chrome.extension.sendRequest({title: chrome.i18n.getMessage("NOTIFICATION_FANNED"), message: "<b>" + data.from + "</b> " + chrome.i18n.getMessage("NOTIFICATION_ISNOWYOURFAN") + "!"});
+			}
+		});
+	});
+
+	var settings = { };
+	chrome.extension.sendRequest({method: "getLocalStorage", value: "disable_animations"}, function(response) {
+		settings.disable_animations = response.value
+	});
+	chrome.extension.sendRequest({method: "getLocalStorage", value: "disable_audience"}, function(response) {
+		settings.disable_audience = response.value
+	});
+	setTimeout(function() {
+		$('#lpSettingsDiv').text(JSON.stringify(settings))
+	}, 1000)
+}, 5000)
+
 
 function secondsToString(seconds) {
 	var numdays = Math.floor(seconds / 86400);

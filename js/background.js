@@ -8,18 +8,35 @@ ga.src = 'https://ssl.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 
 function showNotification(title, message, avatar, color) {
-	var notification = webkitNotifications.createHTMLNotification('notification.html?title=' + title + '&message=' + message + '&avatar=' + avatar + '&color=' + color);
+	//var notification = webkitNotifications.createHTMLNotification('notification.html?title=' + title + '&message=' + message + '&avatar=' + avatar + '&color=' + color);
 		
-	notification.show();
+	//notification.show();
 	
-	_gaq.push(['_trackEvent', 'LastPlug Stats', 'Notifications Served', chrome.app.getDetails().version]);
-	
+	title = $("<div />").html(title).text()
+	message = $("<div />").html(message).text()
+
+	var options = {
+		type: 'basic',
+		title: title,
+		message: message,
+		iconUrl: "img/icon.png"
+	}
+
 	var notificationTimeout = window.localStorage["notificationTimeout"];
 	if(notificationTimeout == undefined) {
 		notificationTimeout = 5000;
 	}
+
+	chrome.notifications.create("", options, function(notificationId) {
+		setTimeout(function() {
+			chrome.notifications.clear(notificationId, function() {
+				// I DON'T CARE CHROME
+			}); 
+		}, notificationTimeout);
+	})
+
+	_gaq.push(['_trackEvent', 'LastPlug Stats', 'Notifications Served', chrome.app.getDetails().version]);
 	
-	setTimeout(function() { notification.cancel(); }, notificationTimeout);
 }
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
@@ -37,7 +54,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 		if(window.localStorage['enable_updates'] == "true") {
 			if(window.localStorage['lastVersion'] !== undefined) {
 				if(window.localStorage['lastVersion'] !== chrome.app.getDetails().version) {
-					showNotification('LastPlug have just been updated!', 'Updated from ' + window.localStorage['lastVersion'] + " to " + chrome.app.getDetails().version + '.<br /><a style="color: white" href="http://github.com/Maxorq/LastPlug/wiki/Changelog" target="_blank">See the changelog here...</a>', 'img/icon.png', 'red');
+					showNotification('LastPlug have just been updated!', 'Updated from ' + window.localStorage['lastVersion'] + " to " + chrome.app.getDetails().version + '.', 'img/icon.png', 'red');
 					window.localStorage['lastVersion'] = chrome.app.getDetails().version;
 				}
 			} else {

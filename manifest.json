@@ -1,19 +1,19 @@
 {
 	"name": "LastPlug",
-	"version": "0.5.3",
+	"version": "0.6-alpha1",
 	"manifest_version": 2,
-	"description": "Some tweaks for plug.dj, also last.fm scrobbling (someday).",
+	"description": "Some tweaks for plug.dj",
 	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
 	"default_locale": "en",
 	"options_page": "settings.html",
 	"icons": { "16": "img/icon.png", "48": "img/icon.png", "128": "img/icon.png" },
 	"background": {
-		"scripts": ["js/background.js"]
+		"scripts": ["js/jquery-1.9.1.min.js", "js/background.js"]
 	},
 	"content_scripts": [
 		{
 			"matches": [ "http://www.plug.dj/*", "http://plug.dj/*"],
-			"js": ["js/jquery-1.9.1.min.js", "js/jquery.url.js", "js/contentscript.js"]
+			"js": ["js/jquery-1.9.1.min.js", "js/contentscript.js"]
 		}
 	],
 	"page_action": {
@@ -22,9 +22,9 @@
 		"default_popup": "settings.html"
 	},
 	"permissions": [
-		"notifications", "tabs", "http://tmiq.pl/*"
+		"notifications", "tabs", "http://statpoint.info/*", "http://plug.dj/*"
 	],
 	"web_accessible_resources": [
-		"js/script.js", "js/jquery-1.9.1.min.js", "js/jquery.url.js", "js/functions.js"
+		"js/script.js", "js/jquery-1.9.1.min.js", "js/functions.js"
 	]
 }
