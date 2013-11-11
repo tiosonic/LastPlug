@@ -68,7 +68,7 @@ setTimeout(function() {
 			if(v.vote == -1) {
 				$('.list.room .user').each(function(li, lv) {
 					if($(lv).find('.name').html() == v.username) {
-						$(lv).append('<i class="icon icon-meh" style="left: auto; right: 9px; top: -1px;"></i>')
+						$(lv).append('<i class="icon icon-meh" style="left: auto; right: 8px; top: -1px;"></i>')
 					}
 				})
 			}
