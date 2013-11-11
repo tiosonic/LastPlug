@@ -1,6 +1,6 @@
 {
 	"name": "LastPlug",
-	"version": "0.6-alpha1",
+	"version": "0.7",
 	"manifest_version": 2,
 	"description": "Some tweaks for plug.dj",
 	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",

@@ -7,7 +7,7 @@ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async
 ga.src = 'https://ssl.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 
-function showNotification(title, message, avatar, color) {
+function showNotification(title, message, icon) {
 	//var notification = webkitNotifications.createHTMLNotification('notification.html?title=' + title + '&message=' + message + '&avatar=' + avatar + '&color=' + color);
 		
 	//notification.show();
@@ -19,7 +19,7 @@ function showNotification(title, message, avatar, color) {
 		type: 'basic',
 		title: title,
 		message: message,
-		iconUrl: "img/icon.png"
+		iconUrl: "img/" + icon + ".png"
 	}
 
 	var notificationTimeout = window.localStorage["notificationTimeout"];
@@ -45,7 +45,7 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 	} else if(request.method == "getVersion") {
 		sendResponse({value: chrome.app.getDetails().version});
 	} else {
-		showNotification(request.title, request.message, request.avatar, request.color);
+		showNotification(request.title, request.message, request.icon);
 	}
 });
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {

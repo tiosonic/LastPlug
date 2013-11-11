@@ -17,62 +17,41 @@ setTimeout(function() {
 	createHiddenDiv("lpUserFanEventDiv")
 
 	$.get('http://statpoint.info/lastplug/', function(data) {
-		nicknameStyles = data
-	});
-
-	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_idletimers"}, function(response) {
-		if(response.value == "true") {
-			$('#booth-canvas').after('<span id="idle-timer-4" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 57px; padding: 4px;">0:00</span>');
-			$('#booth-canvas').after('<span id="idle-timer-3" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 133px; padding: 4px;">0:00</span>');
-			$('#booth-canvas').after('<span id="idle-timer-2" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 207px; padding: 4px;">0:00</span>');
-			$('#booth-canvas').after('<span id="idle-timer-1" style="width: 30px; text-align: center; position: absolute; top: 75%; left: 284px; padding: 4px;">0:00</span>');
-			$('#dj-canvas').after('<span id="idle-timer-0" style="width: 155px; text-align: center; position: absolute; top: 75%; left: 535px; padding-top: 4px;">0:00</span>');
-		}
+		nicknameStyles = JSON.parse(data)
 	});
 
 	chrome.extension.sendRequest({method: "getVersion"}, function(response) {
-		$('#chat-messages').append('<div class="chat-update"><span class="chat-text">Also, welcome to the LastPlug ' + response.value + '!</span></div>');
+		$('#chat-messages').append('<div class="update"><span class="text">Also, welcome to the LastPlug ' + response.value + '!</span></div>');
 	});
 
 	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {
 		if(response.value == "true") {
 			function addTheRule(selector, rule) {
-				document.styleSheets[0].addRule(selector, rule);
-				document.styleSheets[3].addRule(selector, rule);
+				document.styleSheets[2].addRule(selector, rule);
 			}
-			addTheRule(".chat-emote", "color: white;");
-			addTheRule(".chat-from-ambassador", "color: #CFADFF;");
-			addTheRule(".chat-from-moderator", "color: #666;");
-			addTheRule(".chat-from-super", "font-weight: bold; color: #CCC;");
-			addTheRule(".chat-from-you", "color: white;");
-			addTheRule(".chat-mention", "color: white;");
-			addTheRule(".chat-moderator", "background: url('http://i.imgur.com/J0Ek5.png') no-repeat 0 5px;");
+			addTheRule("#chat a", "color: white !important;");
+			addTheRule("#chat .icon", "opacity: 0.3 !important;");
+			addTheRule(".from.ambassador", "color: #CFADFF !important;");
+			addTheRule(".from.staff", "color: #666 !important;");
+			addTheRule(".from.super", "font-weight: bold; color: #CCC !important;");
+			addTheRule(".from.you", "color: white !important;");
+			addTheRule(".is-you .name", "color: white !important;");
+			addTheRule(".chat-moderator", "background: url('http://i.imgur.com/J0Ek5.png') no-repeat 0 5px !important;");
 		}
 	});
 	document.getElementById('lpChatEventDiv').addEventListener('lpChatEvent', function() {
 		var eventData = document.getElementById('lpChatEventDiv').innerText;
 		var data = JSON.parse(eventData);
-		
-		//var isYoutubeURL = data.message.replace(/^[^v]+v.(.{11}).*/,"$1");
-
-		//if(isYoutubeURL) {
-		//	alert(isYoutubeURL);
-		//}
 
 		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_grayscale"}, function(response) {
 			if(response.value == "false") {
-				$('span[class*="chat-from"]').each(function() {
+				$('span[class*="from"]').each(function() {
 					if(nicknameStyles.hasOwnProperty($(this).html())) {
 						$(this).css(nicknameStyles[$(this).html()]);
 					}
-					if($(this).html() == "Maxorq") { 
-						$(this).parent().css({"background" : "url('http://i.imgur.com/ngJqiBv.png') no-repeat 0 5px", "padding-left" : "17px", "width" : "292px"});
+					if($(this).html() == "Maxorq ") { 
+						$(this).parent().css("background", "url('http://i.imgur.com/y9V8q2x.png') no-repeat 7px 7px");
 					}
-
-					//if($(this).html() == "Master Lucas") { 
-					//	$(this).css("color", "#1AD71A"); 
-					//}
-					
 				});
 			}
 		});
@@ -80,14 +59,14 @@ setTimeout(function() {
 		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_mentions"}, function(response) {
 			if(response.value == "true") {
 				if(data.bit == "1") {
-					chrome.extension.sendRequest({title: "You got mentioned on plug.dj!", message: data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ": " + data.message});
+					chrome.extension.sendRequest({icon: "mention", title: "You got mentioned on plug.dj!", message: data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ": " + data.message});
 				}
 			}
 		});
 		chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_chatmessages"}, function(response) {
 			if(response.value == "true") {
 				if(data.bit == "0") {
-					chrome.extension.sendRequest({title: "New message on plug.dj!", message: data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ": " + data.message});
+					chrome.extension.sendRequest({icon: "chat", title: "New message on plug.dj!", message: data.from + " " + chrome.i18n.getMessage("GENERAL_SAYS") + ": " + data.message});
 				}
 			}
 		});
@@ -98,11 +77,11 @@ setTimeout(function() {
 			var eventData = document.getElementById('lpDjAdvanceEventDiv').innerText;
 			var data = JSON.parse(eventData);
 			if(response.value == "true") {
-				chrome.extension.sendRequest({title: data.username + ' ' + chrome.i18n.getMessage("NOTIFICATION_ISNOWPLAYING"), message: data.song + " (" + secondsToString(data.duration) + ")"});
+				chrome.extension.sendRequest({icon: 'playing', title: data.username + ' ' + chrome.i18n.getMessage("NOTIFICATION_ISNOWPLAYING"), message: data.song + " (" + secondsToString(data.duration) + ")"});
 			}
 			chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_autowoot"}, function(anotherresponse) {
 				if((anotherresponse.value == "true") && (data != null)) {
-					$('#button-vote-positive').click();
+					$('#woot').click();
 				}
 			});
 		});
@@ -113,7 +92,7 @@ setTimeout(function() {
 			if(response.value == "true") {
 				var eventData = document.getElementById('lpDjUpdateEventDiv').innerText;
 				var data = JSON.parse(eventData);
-				chrome.extension.sendRequest({title: 'You are close to the booth!', message: 'You will play ' + data.song});
+				chrome.extension.sendRequest({icon: "booth", title: 'You are close to the booth!', message: 'You will play ' + data.song});
 			}
 		});
 	});
@@ -124,17 +103,14 @@ setTimeout(function() {
 			if(response.value == "true") {
 				var eventData = document.getElementById('lpUserFanEventDiv').innerText;
 				var data = JSON.parse(eventData);
-				chrome.extension.sendRequest({title: chrome.i18n.getMessage("NOTIFICATION_FANNED"), message: "<b>" + data.from + "</b> " + chrome.i18n.getMessage("NOTIFICATION_ISNOWYOURFAN") + "!"});
+				chrome.extension.sendRequest({icon: "fan", title: chrome.i18n.getMessage("NOTIFICATION_FANNED"), message: "<b>" + data.from + "</b> " + chrome.i18n.getMessage("NOTIFICATION_ISNOWYOURFAN") + "!"});
 			}
 		});
 	});
 
 	var settings = { };
-	chrome.extension.sendRequest({method: "getLocalStorage", value: "disable_animations"}, function(response) {
-		settings.disable_animations = response.value
-	});
-	chrome.extension.sendRequest({method: "getLocalStorage", value: "disable_audience"}, function(response) {
-		settings.disable_audience = response.value
+	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_autofan"}, function(response) {
+		settings.enable_autofan = response.value
 	});
 	setTimeout(function() {
 		$('#lpSettingsDiv').text(JSON.stringify(settings))
@@ -146,7 +122,7 @@ function secondsToString(seconds) {
 	var numdays = Math.floor(seconds / 86400);
 	var numhours = Math.floor((seconds % 86400) / 3600);
 	var numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
-	var numseconds = ((seconds % 86400) % 3600) % 60;
+	var numseconds = Math.floor(((seconds % 86400) % 3600) % 60);
 	if(numdays > 0) {
 		return ">1 day"
 	} else {

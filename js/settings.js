@@ -1,16 +1,14 @@
-var defaults = [5000, false, false, false, true, true, true, true, true, false, false, true];
-var settings = ['notificationTimeout', 
-				'disable_animations',
-				'disable_audience',
+var defaults = [5000, false, true, true, true, true, true, false, true, false];
+var settings = ['notificationTimeout',
 				'enable_chatmessages', 
 				'enable_djadvances', 
 				'enable_djupdates', 
 				'enable_fans', 
 				'enable_mentions', 
 				'enable_updates', 
+				'enable_autofan',
 				'enable_autowoot', 
-				'enable_grayscale', 
-				'enable_idletimers'];
+				'enable_grayscale'];
 
 
 function loadSettings() {
@@ -49,7 +47,7 @@ function saveSettings() {
 			}
 		}
 	}
-	$('#session').css('display', 'block').html('<div>Saved!</div> You may need to refresh the page to see the changes.')
+	$('#session').slideDown('slow').html('Settings have been saved.<br />You may need to refresh the page.');
 	setTimeout(function() {
 		$('#session').slideUp('slow');
 	}, 3000);
