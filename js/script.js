@@ -50,19 +50,30 @@ setTimeout(function() {
 }, 10000)
 
 setTimeout(function() {
-	setInterval(function() {
-		$.each(API.getUsers(), function(index, value) { 
-			timeIdle[value.id]++
-		})
-		var djs = API.getDJs()
-		for (var i = 0; i < 5; i++) {
-			if (djs.length > i) {
-				$('#idle-timer-' + i).html(secondsToString(timeIdle[djs[i].id]))
-			} else {
-				$('#idle-timer-' + i).html('')
+	// setInterval(function() {
+	// 	$.each(API.getUsers(), function(index, value) { 
+	// 		timeIdle[value.id]++
+	// 	})
+	// 	var djs = API.getDJs()
+	// 	for (var i = 0; i < 5; i++) {
+	// 		if (djs.length > i) {
+	// 			$('#idle-timer-' + i).html(secondsToString(timeIdle[djs[i].id]))
+	// 		} else {
+	// 			$('#idle-timer-' + i).html('')
+	// 		}
+	// 	}
+	// }, 1000)
+	$('#users-button').click(function() {
+		$.each(API.getUsers(), function(i, v) {
+			if(v.vote == -1) {
+				$('.list.room .user').each(function(li, lv) {
+					if($(lv).find('.name').html() == v.username) {
+						$(lv).append('<i class="icon icon-meh" style="left: auto; right: 9px; top: -1px;"></i>')
+					}
+				})
 			}
-		}
-	}, 1000)
+		})
+	})
 }, 10000)
 
 function lpChatEventFunction(data) {
@@ -82,19 +93,31 @@ function lpChatCommandEventFunction(value) {
 	var tokens = value.split(' ')
 	var trigger = tokens[0].toLowerCase()
 	var cmd = tokens
-	cmd.splice(0, 2)
+	cmd.splice(0, 1)
 	cmd = cmd.join(' ')
 
 	switch(trigger) {
 		case '/find':
-			var users = findUser(cmd)
-			if(users.length == 1) {
-				API.chatLog('User found: ' + users[0])
-			} else if(users.length > 1) {
-				API.chatLog('Found multiple users: ' + users.join(', '))
+			if(cmd != "") {
+				var users = findUser(cmd)
+				if(users.length > 1) {
+					var names = ""
+					$.each(users, function(index, value) {
+						if(index > 0) {
+							names += ", "
+						}
+						names += value.username
+					})
+					API.chatLog('Found multiple users: ' + names)
+				} else if(users.length == 1) {
+					API.chatLog('User found: ' + users[0].username)
+				} else {
+					API.chatLog('No users found.')
+				}
 			} else {
-				API.chatLog('No users found.')
-			}
+				API.chatLog('/find <part>: Find all the users with <part> in username.')
+			}			
+			break;
 		case '/skip':
 			if(API.getUser().permission >= API.ROLE.BOUNCER) {
 				API.moderateForceSkip()
@@ -168,11 +191,11 @@ function secondsToString(seconds) {
 }
 
 function findUser(username) {
+	var results = []
 	$.each(API.getUsers(), function(index, value) {
-		var results = []
-		if(value.username.indexOf(username.replace('"', '').replace("'", '')) > -1) {
+		if(value.username.toLowerCase().indexOf(username.replace('"', '').replace("'", '').toLowerCase()) > -1) {
 			results.push(value)
 		}
-		return results
 	})
+	return results
 }
