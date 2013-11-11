@@ -41,6 +41,7 @@ setTimeout(function() {
 	API.on(API.DJ_UPDATE, lpDjUpdateEventFunction)
 	API.on(API.USER_FAN, lpUserFanEventFunction)
 	API.on(API.USER_JOIN, lpUserJoinEventFunction)
+	API.on(API.VOTE_UPDATE, lpVoteUpdateEventFunction)
 
 	$.each(API.getUsers(), function(index, value) { 
 		timeIdle[value.id] = 0
@@ -168,6 +169,26 @@ function lpUserFanEventFunction(user) {
 
 function lpUserJoinEventFunction(user) {
 	timeIdle[user.id] = 0
+}
+
+function lpVoteUpdateEventFunction(obj) {
+	if(obj.vote == -1) {
+		if($('.list.room').length == 1) {
+			$('.list.room .user').each(function(li, lv) {
+				if($(lv).find('.name').html() == obj.user.username) {
+					$(lv).append('<i class="icon icon-meh" style="left: auto; right: 8px; top: -1px;"></i>')
+				}
+			})
+		}
+	} else if(obj.vote == 0) {
+		if($('.list.room').length == 1) {
+			$('.list.room .user').each(function(li, lv) {
+				if($(lv).find('.name').html() == obj.user.username) {
+					$(lv).find('.icon-meh').remove()
+				}
+			})
+		}
+	}
 }
 
 function secondsToString(seconds) {
