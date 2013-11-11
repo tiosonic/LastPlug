@@ -66,13 +66,15 @@ setTimeout(function() {
 
 function lpChatEventFunction(data) {
 	timeIdle[data.fromID] = 0
-	if(data.message.indexOf("@" + API.getUser().username) > -1) {
-		var jsondata = {"from": (data.from), "message": (data.message), "avatar": API.getUser(data.fromID).avatarID, "type": "Mentions", "bit": "1"}
-	} else {
-		var jsondata = {"from": (data.from), "message": (data.message), "avatar": API.getUser(data.fromID).avatarID, "type": "Chat Messages", "bit": "0"}
+	if(data.fromID != API.getUser().id) {
+		if(data.message.indexOf("@" + API.getUser().username) > -1) {
+			var jsondata = {"from": (data.from), "message": (data.message), "avatar": API.getUser(data.fromID).avatarID, "type": "Mentions", "bit": "1"}
+		} else {
+			var jsondata = {"from": (data.from), "message": (data.message), "avatar": API.getUser(data.fromID).avatarID, "type": "Chat Messages", "bit": "0"}
+		}
+		var json = JSON.stringify(jsondata)
+		fireLpChatEvent(json)
 	}
-	var json = JSON.stringify(jsondata)
-	fireLpChatEvent(json)
 }
 
 function lpDjAdvanceEventFunction(obj) {
