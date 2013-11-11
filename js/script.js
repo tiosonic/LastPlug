@@ -98,20 +98,27 @@ function lpChatCommandEventFunction(value) {
 	cmd = cmd.join(' ')
 
 	switch(trigger) {
+		case '/add':
+			if(cmd != "") {
+				var users = findUser(cmd)
+				if(users.count > 1) {
+					API.chatLog('Found multiple users: ' + users.names, true)
+				} else if(users.count == 1) {
+					API.moderateAddDJ(users.users[0].id)
+				} else {
+					API.chatLog('No users found.', true)
+				}
+			} else {
+				API.chatLog('/add <username>: Adds <username> to the waitlist.')
+			}
+			break;
 		case '/find':
 			if(cmd != "") {
 				var users = findUser(cmd)
-				if(users.length > 1) {
-					var names = ""
-					$.each(users, function(index, value) {
-						if(index > 0) {
-							names += ", "
-						}
-						names += value.username
-					})
-					API.chatLog('Found multiple users: ' + names)
-				} else if(users.length == 1) {
-					API.chatLog('User found: ' + users[0].username)
+				if(users.count > 1) {
+					API.chatLog('Found multiple users: ' + users.names)
+				} else if(users.count == 1) {
+					API.chatLog('User found: ' + users.names)
 				} else {
 					API.chatLog('No users found.')
 				}
@@ -212,10 +219,19 @@ function secondsToString(seconds) {
 }
 
 function findUser(username) {
-	var results = []
+	var results = {
+		count: 0,
+		names: "",
+		users: []
+	}
 	$.each(API.getUsers(), function(index, value) {
 		if(value.username.toLowerCase().indexOf(username.replace('"', '').replace("'", '').toLowerCase()) > -1) {
-			results.push(value)
+			results.users.push(value)
+			results.count++
+			if(index > 0) {
+				results.names += ", "
+			}
+			results.names += value.username
 		}
 	})
 	return results
