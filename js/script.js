@@ -81,6 +81,13 @@ function lpDjAdvanceEventFunction(obj) {
 		var json = JSON.stringify(jsondata)
 		fireLpDjAdvanceEvent(json)
 	}
+	if(settings.enable_historywarn == "true") {
+		$.each(API.getHistory(), function(index, value) {
+			if(value.media.id == API.getMedia().id) {
+				API.chatLog('This song has been played in history about ' + (index + 1) + ' songs ago by ' +  value.user.username + '!', true)
+			}
+		})
+	}
 }
 
 function lpDjUpdateEventFunction(djs) {
@@ -90,6 +97,7 @@ function lpDjUpdateEventFunction(djs) {
 		fireLpDjUpdateEvent(json)
 		lastWaitListPosition = API.getWaitListPosition()
 	}
+
 }
 
 function lpUserFanEventFunction(user) {

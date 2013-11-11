@@ -112,6 +112,9 @@ setTimeout(function() {
 	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_autofan"}, function(response) {
 		settings.enable_autofan = response.value
 	});
+	chrome.extension.sendRequest({method: "getLocalStorage", value: "enable_historywarn"}, function(response) {
+		settings.enable_historywarn = response.value
+	});
 	setTimeout(function() {
 		$('#lpSettingsDiv').text(JSON.stringify(settings))
 	}, 1000)

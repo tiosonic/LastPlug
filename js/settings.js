@@ -1,4 +1,4 @@
-var defaults = [5000, false, true, true, true, true, true, false, true, false];
+var defaults = [5000, false, true, true, true, true, true, false, true, false, false];
 var settings = ['notificationTimeout',
 				'enable_chatmessages', 
 				'enable_djadvances', 
@@ -8,7 +8,8 @@ var settings = ['notificationTimeout',
 				'enable_updates', 
 				'enable_autofan',
 				'enable_autowoot', 
-				'enable_grayscale'];
+				'enable_grayscale',
+				'enable_historywarn'];
 
 
 function loadSettings() {
