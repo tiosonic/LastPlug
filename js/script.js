@@ -130,6 +130,24 @@ function lpChatCommandEventFunction(value) {
 				API.chatLog('/find <part>: Find all the users with <part> in username.')
 			}			
 			break;
+		case '/remove':
+			if(cmd != "") {
+				var users = findUser(cmd)
+				if(users.count > 1) {
+					API.chatLog('Found multiple users: ' + users.names, true)
+				} else if(users.count == 1) {
+					if(API.getUser().permission >= API.ROLE.BOUNCER) {
+						API.moderateRemoveDJ(users.users[0].id)
+					} else {
+						API.chatLog('You don\'t have permission to edit the waitlist here.', true)
+					}
+				} else {
+					API.chatLog('No users found.', true)
+				}
+			} else {
+				API.chatLog('/remove <username>: Removes <username> from the waitlist.')
+			}
+			break;
 		case '/skip':
 			if(API.getUser().permission >= API.ROLE.BOUNCER) {
 				API.moderateForceSkip()
