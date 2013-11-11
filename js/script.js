@@ -104,7 +104,11 @@ function lpChatCommandEventFunction(value) {
 				if(users.count > 1) {
 					API.chatLog('Found multiple users: ' + users.names, true)
 				} else if(users.count == 1) {
-					API.moderateAddDJ(users.users[0].id)
+					if(API.getUser().permission >= API.ROLE.BOUNCER) {
+						API.moderateAddDJ(users.users[0].id)
+					} else {
+						API.chatLog('You don\'t have permission to edit the waitlist here.', true)
+					}
 				} else {
 					API.chatLog('No users found.', true)
 				}
