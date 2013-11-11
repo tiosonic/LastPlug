@@ -7,6 +7,7 @@ djUpdateEvent.initEvent('lpDjUpdateEvent', true, true)
 var userFanEvent = document.createEvent('Event')
 userFanEvent.initEvent('lpUserFanEvent', true, true)
 
+var ignoreList = []
 var lastWaitListPosition = 0
 
 function fireLpChatEvent(data) {
@@ -51,19 +52,6 @@ setTimeout(function() {
 }, 10000)
 
 setTimeout(function() {
-	// setInterval(function() {
-	// 	$.each(API.getUsers(), function(index, value) { 
-	// 		timeIdle[value.id]++
-	// 	})
-	// 	var djs = API.getDJs()
-	// 	for (var i = 0; i < 5; i++) {
-	// 		if (djs.length > i) {
-	// 			$('#idle-timer-' + i).html(secondsToString(timeIdle[djs[i].id]))
-	// 		} else {
-	// 			$('#idle-timer-' + i).html('')
-	// 		}
-	// 	}
-	// }, 1000)
 	$('#users-button').click(function() {
 		$.each(API.getUsers(), function(i, v) {
 			if(v.vote == -1) {
@@ -78,15 +66,16 @@ setTimeout(function() {
 }, 10000)
 
 function lpChatEventFunction(data) {
-	timeIdle[data.fromID] = 0
-	if(data.fromID != API.getUser().id) {
-		if(data.message.indexOf("@" + API.getUser().username) > -1) {
-			var jsondata = {"from": (data.from), "message": (data.message), "avatar": API.getUser(data.fromID).avatarID, "type": "Mentions", "bit": "1"}
-		} else {
-			var jsondata = {"from": (data.from), "message": (data.message), "avatar": API.getUser(data.fromID).avatarID, "type": "Chat Messages", "bit": "0"}
+	if(ignoreList.indexOf(data.fromID) == -1) {
+		if(data.fromID != API.getUser().id) {
+			if(data.message.indexOf("@" + API.getUser().username) > -1) {
+				var jsondata = {"from": (data.from), "message": (data.message), "avatar": API.getUser(data.fromID).avatarID, "type": "Mentions", "bit": "1"}
+			} else {
+				var jsondata = {"from": (data.from), "message": (data.message), "avatar": API.getUser(data.fromID).avatarID, "type": "Chat Messages", "bit": "0"}
+			}
+			var json = JSON.stringify(jsondata)
+			fireLpChatEvent(json)
 		}
-		var json = JSON.stringify(jsondata)
-		fireLpChatEvent(json)
 	}
 }
 
@@ -129,6 +118,25 @@ function lpChatCommandEventFunction(value) {
 			} else {
 				API.chatLog('/find <part>: Find all the users with <part> in username.')
 			}			
+			break;
+		case '/ignore':
+			if(cmd != "") {
+				var users = findUser(cmd)
+				if(users.count > 1) {
+					API.chatLog('Found multiple users: ' + users.names, true)
+				} else if(users.count == 1) {
+					if(ignoreList.indexOf(users.users[0].id) > -1) {
+						API.chatLog(users.names + ' is already in your ignore list!', true)
+					} else {
+						ignoreList.push(users.users[0].id)
+						API.chatLog('Added ' + users.names + ' to your ignore list!', true)
+					}
+				} else {
+					API.chatLog('No users found.', true)
+				}
+			} else {
+				API.chatLog('/add <username>: Adds <username> to the waitlist.')
+			}
 			break;
 		case '/remove':
 			if(cmd != "") {
