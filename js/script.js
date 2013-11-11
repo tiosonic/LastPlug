@@ -36,6 +36,7 @@ var timeIdle = []
 setTimeout(function() {
 
 	API.on(API.CHAT, lpChatEventFunction)
+	API.on(API.CHAT_COMMAND, lpChatCommandEventFunction)
 	API.on(API.DJ_ADVANCE, lpDjAdvanceEventFunction)
 	API.on(API.DJ_UPDATE, lpDjUpdateEventFunction)
 	API.on(API.USER_FAN, lpUserFanEventFunction)
@@ -74,6 +75,36 @@ function lpChatEventFunction(data) {
 		}
 		var json = JSON.stringify(jsondata)
 		fireLpChatEvent(json)
+	}
+}
+
+function lpChatCommandEventFunction(value) {
+	var tokens = value.split(' ')
+	var trigger = tokens[0].toLowerCase()
+	var cmd = tokens
+	cmd.splice(0, 2)
+	cmd = cmd.join(' ')
+
+	switch(trigger) {
+		case '/find':
+			var users = findUser(cmd)
+			if(users.length == 1) {
+				API.chatLog('User found: ' + users[0])
+			} else if(users.length > 1) {
+				API.chatLog('Found multiple users: ' + users.join(', '))
+			} else {
+				API.chatLog('No users found.')
+			}
+		case '/skip':
+			if(API.getUser().permission >= API.ROLE.BOUNCER) {
+				API.moderateForceSkip()
+			} else {
+				API.chatLog('You don\'t have permission to skip here.', true)
+			}
+			break;
+		default:
+			API.chatLog(value + ': command not found.', true)
+			break;
 	}
 }
 
@@ -134,4 +165,14 @@ function secondsToString(seconds) {
 			}
 		}
 	}
+}
+
+function findUser(username) {
+	$.each(API.getUsers(), function(index, value) {
+		var results = []
+		if(value.username.indexOf(username.replace('"', '').replace("'", '')) > -1) {
+			results.push(value)
+		}
+		return results
+	})
 }
