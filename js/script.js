@@ -76,6 +76,8 @@ function lpChatEventFunction(data) {
 			var json = JSON.stringify(jsondata)
 			fireLpChatEvent(json)
 		}
+	} else {
+		$('.cid-' + data.chatID).css('display', 'none')
 	}
 }
 
@@ -129,13 +131,13 @@ function lpChatCommandEventFunction(value) {
 						API.chatLog(users.names + ' is already in your ignore list!', true)
 					} else {
 						ignoreList.push(users.users[0].id)
-						API.chatLog('Added ' + users.names + ' to your ignore list!', true)
+						API.chatLog('Added ' + users.names + ' to your ignore list!')
 					}
 				} else {
 					API.chatLog('No users found.', true)
 				}
 			} else {
-				API.chatLog('/add <username>: Adds <username> to the waitlist.')
+				API.chatLog('/ignore <username>: Adds <username> to the ignore list.')
 			}
 			break;
 		case '/remove':
@@ -258,7 +260,7 @@ function findUser(username) {
 		if(value.username.toLowerCase().indexOf(username.replace('"', '').replace("'", '').toLowerCase()) > -1) {
 			results.users.push(value)
 			results.count++
-			if(index > 0) {
+			if(results.names != "") {
 				results.names += ", "
 			}
 			results.names += value.username
