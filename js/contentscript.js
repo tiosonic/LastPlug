@@ -3,18 +3,20 @@ s.src = chrome.extension.getURL("js/script.js");
 document.head.appendChild(s);
 
 function createHiddenDiv(divname) {
-	var t = document.createElement('div');
-	t.id = divname;
-	t.style.cssText = "display:none;";
-	document.body.appendChild(t);
+	$('<div></div>').css('display', 'none').attr('id', divname).appendTo('body')
 }
 
 setTimeout(function() {
-	createHiddenDiv("lpChatEventDiv")
-	createHiddenDiv("lpDjAdvanceEventDiv")
-	createHiddenDiv("lpDjUpdateEventDiv")
-	createHiddenDiv("lpSettingsDiv")
-	createHiddenDiv("lpUserFanEventDiv")
+	var divs = [
+		"lpChatEventDiv",
+		"lpDjAdvanceEventDiv",
+		"lpDjUpdateEventDiv",
+		"lpSettingsDiv",
+		"lpUserFanEventDiv"
+	]
+	$.each(divs, function(index, value) {
+		createHiddenDiv(value)
+	})
 
 	$.get('http://statpoint.info/lastplug/', function(data) {
 		nicknameStyles = JSON.parse(data)
