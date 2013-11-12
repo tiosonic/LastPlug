@@ -284,7 +284,7 @@ function checkHistoryWarning() {
 			if(value.media.id == nextMedia.media.id) {
 				setTimeout(function() { 
 					$('#footer').addClass('lp-red-bg')
-					$('#next-media-label .dark-label').removeClass('dark-label').html('WARNING: this song has been played recently (' + (50 - index) + ' songs ago)')
+					$('#next-media-label .dark-label').removeClass('dark-label').html('WARNING: this song has been played recently (' + (index + 1) + ' songs ago)')
 				}, 100)
 			} else {
 				$('#footer').removeClass('lp-red-bg')
