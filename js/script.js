@@ -49,6 +49,8 @@ setTimeout(function() {
 	})
 	settings = $.parseJSON($('#lpSettingsDiv').text())
 
+	checkHistoryWarning()
+
 }, 10000)
 
 setTimeout(function() {
@@ -63,6 +65,12 @@ setTimeout(function() {
 			}
 		})
 	})
+	if(settings.enable_historywarn == "true") {
+		$('<style type="text/css"> .lp-red-bg { background-color: #c91515 !important; } .lp-white-text { color: white !important; } </style>').appendTo('head')
+		$('#next-media-title .bar-value').bind('DOMSubtreeModified', function() {
+			checkHistoryWarning()
+		})
+	}
 }, 10000)
 
 function lpChatEventFunction(data) {
@@ -267,4 +275,21 @@ function findUser(username) {
 		}
 	})
 	return results
+}
+
+function checkHistoryWarning() {
+	var nextMedia = API.getNextMedia()
+	if(nextMedia != undefined) {
+		$.each(API.getHistory(), function(index, value) {
+			if(value.media.id == nextMedia.media.id) {
+				setTimeout(function() { 
+					$('#footer').addClass('lp-red-bg')
+					$('#next-media-label .dark-label').removeClass('dark-label').html('WARNING: this song has been played recently (' + (50 - index) + ' songs ago)')
+				}, 100)
+			} else {
+				$('#footer').removeClass('lp-red-bg')
+				$('#next-media-label span').addClass('dark-label')
+			}
+		})	
+	}
 }
