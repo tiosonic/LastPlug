@@ -136,7 +136,9 @@ function lpChatCommandEventFunction(value) {
 					API.chatLog('Found multiple users: ' + users.names, true)
 				} else if(users.count == 1) {
 					if(ignoreList.indexOf(users.users[0].id) > -1) {
-						API.chatLog(users.names + ' is already in your ignore list!', true)
+						var index = ignoreList.indexOf(users.users[0].id)
+						ignoreList.splice(index, 1)
+						API.chatLog('Removed ' + users.names + ' from your ignore list!')
 					} else {
 						ignoreList.push(users.users[0].id)
 						API.chatLog('Added ' + users.names + ' to your ignore list!')
@@ -145,7 +147,7 @@ function lpChatCommandEventFunction(value) {
 					API.chatLog('No users found.', true)
 				}
 			} else {
-				API.chatLog('/ignore <username>: Adds <username> to the ignore list.')
+				API.chatLog('/ignore <username>: Adds <username> to a temporary ignore list.')
 			}
 			break;
 		case '/remove':
