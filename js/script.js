@@ -8,7 +8,7 @@ var userFanEvent = document.createEvent('Event')
 userFanEvent.initEvent('lpUserFanEvent', true, true)
 
 var ignoreList = []
-var lastWaitListPosition = 0
+var lastBoothPosition = 0
 
 function fireLpChatEvent(data) {
 	hiddenDiv = document.getElementById('lpChatEventDiv')
@@ -197,11 +197,11 @@ function lpDjAdvanceEventFunction(obj) {
 }
 
 function lpDjUpdateEventFunction(djs) {
-	if(API.getWaitListPosition() < 5 && API.getWaitListPosition() != lastWaitListPosition) {
+	if(API.getBoothPosition() > 0 && API.getBoothPosition() < 6 && API.getBoothPosition() != lastBoothPosition) {
 		var jsondata = { "avatar": API.getUser().avatarID, "song": API.getNextMedia().media.author + " - " + API.getNextMedia().media.title + " (" + secondsToString(API.getNextMedia().media.duration) + ")", "type": "Booth Notifications" }
 		var json = JSON.stringify(jsondata)
 		fireLpDjUpdateEvent(json)
-		lastWaitListPosition = API.getWaitListPosition()
+		lastBoothPosition = API.getBoothPosition()
 	}
 
 }
