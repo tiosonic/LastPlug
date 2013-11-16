@@ -281,7 +281,7 @@ function findUser(username) {
 
 function checkHistoryWarning() {
 	var nextMedia = API.getNextMedia()
-	if(nextMedia != undefined) {
+	if(nextMedia != undefined && API.getDJs()[0].id != API.getUser().id) {
 		$.each(API.getHistory(), function(index, value) {
 			if(value.media.id == nextMedia.media.id) {
 				setTimeout(function() { 
