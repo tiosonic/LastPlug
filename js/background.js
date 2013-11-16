@@ -7,6 +7,12 @@ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async
 ga.src = 'https://ssl.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 
+$.each(window.localStorage, function(name) {
+	if(name != 'lastVersion') {
+		_gaq.push(['_trackEvent', 'LastPlug Settings', name, window.localStorage[name]])
+	}
+})
+
 var pageActive = false
 
 function showNotification(title, message, icon) {
@@ -57,7 +63,6 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
 	})	
 })
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	console.log(tab.url)
 	if(tab.url.indexOf('http://plug.dj/') > -1) {
 		chrome.pageAction.show(tabId)
 		if(window.localStorage['enable_updates'] == "true") {
