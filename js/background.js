@@ -4,7 +4,7 @@ _gaq.push(['_trackPageviews']);
 _gaq.push(['_setCustomVar', 1, 'Version', chrome.app.getDetails().version, '3']);
 $.each(window.localStorage, function(name) {
 	if(name != 'lastVersion') {
-		_gaq.push(['_setCustomVar', 2, name, window.localStorage[name]], '3'])
+		_gaq.push(['_setCustomVar', 2, name, window.localStorage[name], '3'])
 	}
 })
 _gaq.push(['_trackEvent', 'LastPlug Stats', 'Loads Into Page', chrome.app.getDetails().version]);
