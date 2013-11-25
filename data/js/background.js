@@ -23,7 +23,7 @@ function showNotification(title, message, icon) {
 			type: 'basic',
 			title: title,
 			message: message,
-			iconUrl: "img/" + icon + ".png"
+			iconUrl: "data/img/" + icon + ".png"
 		}
 
 		var notificationTimeout = window.localStorage["notificationTimeout"];

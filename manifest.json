@@ -6,26 +6,26 @@
 	"description": "Some tweaks for plug.dj",
 	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
 	"default_locale": "en",
-	"options_page": "settings.html",
-	"icons": { "16": "img/icon.png", "48": "img/icon.png", "128": "img/icon.png" },
+	"options_page": "data/settings.html",
+	"icons": { "16": "data/img/icon.png", "48": "data/img/icon.png", "128": "data/img/icon.png" },
 	"background": {
-		"scripts": ["js/jquery-1.9.1.min.js", "js/background.js"]
+		"scripts": ["data/js/jquery-1.9.1.min.js", "data/js/background.js"]
 	},
 	"content_scripts": [
 		{
 			"matches": [ "http://www.plug.dj/*", "http://plug.dj/*"],
-			"js": ["js/jquery-1.9.1.min.js", "js/contentscript.js"]
+			"js": ["data/js/jquery-1.9.1.min.js", "data/js/contentscript.js"]
 		}
 	],
 	"page_action": {
-		"default_icon": "img/icon.png",
+		"default_icon": "data/img/icon.png",
 		"default_title": "LastPlug Settings",
-		"default_popup": "settings.html"
+		"default_popup": "data/settings.html"
 	},
 	"permissions": [
 		"notifications", "tabs", "http://statpoint.info/*", "http://plug.dj/*"
 	],
 	"web_accessible_resources": [
-		"js/script.js", "js/jquery-1.9.1.min.js", "js/functions.js"
+		"data/js/script.js", "data/js/jquery-1.9.1.min.js", "data/js/functions.js"
 	]
 }
